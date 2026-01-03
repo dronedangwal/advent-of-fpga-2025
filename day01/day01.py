@@ -1,24 +1,20 @@
-data = []
-
 with open('input.txt') as f:
     data = f.read().strip().split('\n')
-    # print(data)
 
 pos = 50
-ans = 0
+p1 = 0; p2 = 0
+
 for move in data:
     dir, clicks = move[0], int(move[1:])
-    ans += clicks // 100
-    clicks = clicks % 100
+    p2 += clicks // 100
+    clicks %= 100
     if dir == 'L':
-        if clicks >= pos and pos > 0:
-            ans += 1
-        pos -= clicks
-        pos %= 100
+        p2 += int((pos > 0) & (clicks >= pos))
     elif dir == 'R':
-        if clicks >= (100 - pos) and pos > 0:
-            ans += 1
-        pos += clicks
-        pos %= 100
+        p2 += int((pos > 0) & (clicks + pos >= 100))
+    pos += clicks if dir == 'R' else -clicks
+    pos %= 100
+    p1 += pos == 0
 
-print(ans)
+print(f"Part 1 password: {p1}")
+print(f"Part 2 password: {p2}")
